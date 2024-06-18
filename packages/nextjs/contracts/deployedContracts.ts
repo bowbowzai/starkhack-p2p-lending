@@ -3,6 +3,160 @@
  * You should not edit it manually or your changes might be overwritten.
  */
 
-const deployedContracts = {} as const;
+const deployedContracts = {
+  devnet: {
+    P2PLending: {
+      address:
+        "0x01a5c5821a87661690aa0ef404f05d44272a773bad3fd87075d84b1f7eddc7ee",
+      abi: [
+        {
+          type: "impl",
+          name: "P2PLendingImpl",
+          interface_name: "contracts::P2PLending::IP2PLendingTrait",
+        },
+        {
+          type: "struct",
+          name: "core::integer::u256",
+          members: [
+            {
+              name: "low",
+              type: "core::integer::u128",
+            },
+            {
+              name: "high",
+              type: "core::integer::u128",
+            },
+          ],
+        },
+        {
+          type: "struct",
+          name: "contracts::P2PLending::P2PLending::Loan",
+          members: [
+            {
+              name: "borrower",
+              type: "core::starknet::contract_address::ContractAddress",
+            },
+            {
+              name: "token",
+              type: "core::starknet::contract_address::ContractAddress",
+            },
+            {
+              name: "amount",
+              type: "core::integer::u256",
+            },
+            {
+              name: "repayAmount",
+              type: "core::integer::u256",
+            },
+            {
+              name: "fundedAmount",
+              type: "core::integer::u256",
+            },
+            {
+              name: "deadline",
+              type: "core::integer::u256",
+            },
+            {
+              name: "interest_rate",
+              type: "core::integer::u256",
+            },
+            {
+              name: "status",
+              type: "core::felt252",
+            },
+          ],
+        },
+        {
+          type: "interface",
+          name: "contracts::P2PLending::IP2PLendingTrait",
+          items: [
+            {
+              type: "function",
+              name: "request_loan",
+              inputs: [
+                {
+                  name: "token",
+                  type: "core::starknet::contract_address::ContractAddress",
+                },
+                {
+                  name: "amount",
+                  type: "core::integer::u256",
+                },
+                {
+                  name: "interest_rate",
+                  type: "core::integer::u256",
+                },
+              ],
+              outputs: [],
+              state_mutability: "external",
+            },
+            {
+              type: "function",
+              name: "fund_loan",
+              inputs: [],
+              outputs: [],
+              state_mutability: "external",
+            },
+            {
+              type: "function",
+              name: "get_loan",
+              inputs: [
+                {
+                  name: "loan_id",
+                  type: "core::felt252",
+                },
+              ],
+              outputs: [
+                {
+                  type: "contracts::P2PLending::P2PLending::Loan",
+                },
+              ],
+              state_mutability: "view",
+            },
+          ],
+        },
+        {
+          type: "constructor",
+          name: "constructor",
+          inputs: [],
+        },
+        {
+          type: "event",
+          name: "contracts::P2PLending::P2PLending::LoanRequest",
+          kind: "struct",
+          members: [
+            {
+              name: "user",
+              type: "core::starknet::contract_address::ContractAddress",
+              kind: "key",
+            },
+            {
+              name: "token",
+              type: "core::starknet::contract_address::ContractAddress",
+              kind: "key",
+            },
+            {
+              name: "amount",
+              type: "core::integer::u256",
+              kind: "data",
+            },
+          ],
+        },
+        {
+          type: "event",
+          name: "contracts::P2PLending::P2PLending::Event",
+          kind: "enum",
+          variants: [
+            {
+              name: "LoanRequest",
+              type: "contracts::P2PLending::P2PLending::LoanRequest",
+              kind: "nested",
+            },
+          ],
+        },
+      ],
+    },
+  },
+} as const;
 
 export default deployedContracts;
