@@ -7,7 +7,7 @@ const deployedContracts = {
   devnet: {
     P2PLending: {
       address:
-        "0x01a5c5821a87661690aa0ef404f05d44272a773bad3fd87075d84b1f7eddc7ee",
+        "0x07e387442840109a6faab4521cdae47603a1df5432eca19da50812829f8edeac",
       abi: [
         {
           type: "impl",
@@ -30,39 +30,19 @@ const deployedContracts = {
         },
         {
           type: "struct",
-          name: "contracts::P2PLending::P2PLending::Loan",
+          name: "core::byte_array::ByteArray",
           members: [
             {
-              name: "borrower",
-              type: "core::starknet::contract_address::ContractAddress",
+              name: "data",
+              type: "core::array::Array::<core::bytes_31::bytes31>",
             },
             {
-              name: "token",
-              type: "core::starknet::contract_address::ContractAddress",
-            },
-            {
-              name: "amount",
-              type: "core::integer::u256",
-            },
-            {
-              name: "repayAmount",
-              type: "core::integer::u256",
-            },
-            {
-              name: "fundedAmount",
-              type: "core::integer::u256",
-            },
-            {
-              name: "deadline",
-              type: "core::integer::u256",
-            },
-            {
-              name: "interest_rate",
-              type: "core::integer::u256",
-            },
-            {
-              name: "status",
+              name: "pending_word",
               type: "core::felt252",
+            },
+            {
+              name: "pending_word_len",
+              type: "core::integer::u32",
             },
           ],
         },
@@ -86,6 +66,10 @@ const deployedContracts = {
                   name: "interest_rate",
                   type: "core::integer::u256",
                 },
+                {
+                  name: "deadlineForFund",
+                  type: "core::integer::u64",
+                },
               ],
               outputs: [],
               state_mutability: "external",
@@ -93,13 +77,62 @@ const deployedContracts = {
             {
               type: "function",
               name: "fund_loan",
-              inputs: [],
+              inputs: [
+                {
+                  name: "loan_id",
+                  type: "core::felt252",
+                },
+                {
+                  name: "amount",
+                  type: "core::integer::u256",
+                },
+              ],
               outputs: [],
               state_mutability: "external",
             },
             {
               type: "function",
-              name: "get_loan",
+              name: "repay_loan",
+              inputs: [
+                {
+                  name: "loan_id",
+                  type: "core::felt252",
+                },
+              ],
+              outputs: [],
+              state_mutability: "external",
+            },
+            {
+              type: "function",
+              name: "register",
+              inputs: [
+                {
+                  name: "name",
+                  type: "core::byte_array::ByteArray",
+                },
+              ],
+              outputs: [],
+              state_mutability: "external",
+            },
+            {
+              type: "function",
+              name: "get_username",
+              inputs: [
+                {
+                  name: "user",
+                  type: "core::starknet::contract_address::ContractAddress",
+                },
+              ],
+              outputs: [
+                {
+                  type: "core::byte_array::ByteArray",
+                },
+              ],
+              state_mutability: "view",
+            },
+            {
+              type: "function",
+              name: "get_loan_borrower",
               inputs: [
                 {
                   name: "loan_id",
@@ -108,7 +141,166 @@ const deployedContracts = {
               ],
               outputs: [
                 {
-                  type: "contracts::P2PLending::P2PLending::Loan",
+                  type: "core::starknet::contract_address::ContractAddress",
+                },
+              ],
+              state_mutability: "view",
+            },
+            {
+              type: "function",
+              name: "get_loan_token",
+              inputs: [
+                {
+                  name: "loan_id",
+                  type: "core::felt252",
+                },
+              ],
+              outputs: [
+                {
+                  type: "core::starknet::contract_address::ContractAddress",
+                },
+              ],
+              state_mutability: "view",
+            },
+            {
+              type: "function",
+              name: "get_loan_amount",
+              inputs: [
+                {
+                  name: "loan_id",
+                  type: "core::felt252",
+                },
+              ],
+              outputs: [
+                {
+                  type: "core::integer::u256",
+                },
+              ],
+              state_mutability: "view",
+            },
+            {
+              type: "function",
+              name: "get_loan_repay_amount",
+              inputs: [
+                {
+                  name: "loan_id",
+                  type: "core::felt252",
+                },
+              ],
+              outputs: [
+                {
+                  type: "core::integer::u256",
+                },
+              ],
+              state_mutability: "view",
+            },
+            {
+              type: "function",
+              name: "get_loan_funded_amount",
+              inputs: [
+                {
+                  name: "loan_id",
+                  type: "core::felt252",
+                },
+              ],
+              outputs: [
+                {
+                  type: "core::integer::u256",
+                },
+              ],
+              state_mutability: "view",
+            },
+            {
+              type: "function",
+              name: "get_loan_fund_deadline",
+              inputs: [
+                {
+                  name: "loan_id",
+                  type: "core::felt252",
+                },
+              ],
+              outputs: [
+                {
+                  type: "core::integer::u64",
+                },
+              ],
+              state_mutability: "view",
+            },
+            {
+              type: "function",
+              name: "get_loan_interest",
+              inputs: [
+                {
+                  name: "loan_id",
+                  type: "core::felt252",
+                },
+              ],
+              outputs: [
+                {
+                  type: "core::integer::u256",
+                },
+              ],
+              state_mutability: "view",
+            },
+            {
+              type: "function",
+              name: "get_loan_status",
+              inputs: [
+                {
+                  name: "loan_id",
+                  type: "core::felt252",
+                },
+              ],
+              outputs: [
+                {
+                  type: "core::integer::u8",
+                },
+              ],
+              state_mutability: "view",
+            },
+            {
+              type: "function",
+              name: "get_loan_count",
+              inputs: [],
+              outputs: [
+                {
+                  type: "core::felt252",
+                },
+              ],
+              state_mutability: "view",
+            },
+            {
+              type: "function",
+              name: "get_funder_funded_amount",
+              inputs: [
+                {
+                  name: "loan_id",
+                  type: "core::felt252",
+                },
+                {
+                  name: "funder",
+                  type: "core::starknet::contract_address::ContractAddress",
+                },
+              ],
+              outputs: [
+                {
+                  type: "core::integer::u256",
+                },
+              ],
+              state_mutability: "view",
+            },
+            {
+              type: "function",
+              name: "get_funders_in_loan_counter",
+              inputs: [
+                {
+                  name: "loan_id",
+                  type: "core::felt252",
+                },
+              ],
+              outputs: [
+                {
+                  type: "core::integer::u256",
                 },
               ],
               state_mutability: "view",
@@ -140,6 +332,77 @@ const deployedContracts = {
               type: "core::integer::u256",
               kind: "data",
             },
+            {
+              name: "interest_rate",
+              type: "core::integer::u256",
+              kind: "data",
+            },
+          ],
+        },
+        {
+          type: "event",
+          name: "contracts::P2PLending::P2PLending::UserRegistration",
+          kind: "struct",
+          members: [
+            {
+              name: "user",
+              type: "core::starknet::contract_address::ContractAddress",
+              kind: "key",
+            },
+            {
+              name: "name",
+              type: "core::byte_array::ByteArray",
+              kind: "key",
+            },
+          ],
+        },
+        {
+          type: "event",
+          name: "contracts::P2PLending::P2PLending::FundLoan",
+          kind: "struct",
+          members: [
+            {
+              name: "funder",
+              type: "core::starknet::contract_address::ContractAddress",
+              kind: "key",
+            },
+            {
+              name: "loanId",
+              type: "core::felt252",
+              kind: "key",
+            },
+            {
+              name: "amount",
+              type: "core::integer::u256",
+              kind: "data",
+            },
+          ],
+        },
+        {
+          type: "event",
+          name: "contracts::P2PLending::P2PLending::RepayLoan",
+          kind: "struct",
+          members: [
+            {
+              name: "repayer",
+              type: "core::starknet::contract_address::ContractAddress",
+              kind: "key",
+            },
+            {
+              name: "receiver",
+              type: "core::starknet::contract_address::ContractAddress",
+              kind: "key",
+            },
+            {
+              name: "loanId",
+              type: "core::felt252",
+              kind: "key",
+            },
+            {
+              name: "amount",
+              type: "core::integer::u256",
+              kind: "data",
+            },
           ],
         },
         {
@@ -150,6 +413,21 @@ const deployedContracts = {
             {
               name: "LoanRequest",
               type: "contracts::P2PLending::P2PLending::LoanRequest",
+              kind: "nested",
+            },
+            {
+              name: "UserRegistration",
+              type: "contracts::P2PLending::P2PLending::UserRegistration",
+              kind: "nested",
+            },
+            {
+              name: "FundLoan",
+              type: "contracts::P2PLending::P2PLending::FundLoan",
+              kind: "nested",
+            },
+            {
+              name: "RepayLoan",
+              type: "contracts::P2PLending::P2PLending::RepayLoan",
               kind: "nested",
             },
           ],
