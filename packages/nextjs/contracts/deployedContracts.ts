@@ -7,7 +7,7 @@ const deployedContracts = {
   devnet: {
     P2PLending: {
       address:
-        "0x07e387442840109a6faab4521cdae47603a1df5432eca19da50812829f8edeac",
+        "0x0541050e778474bfef122a6f2aa2efa2dfa1f933458290a3c8f340041814aa38",
       abi: [
         {
           type: "impl",
@@ -132,7 +132,7 @@ const deployedContracts = {
             },
             {
               type: "function",
-              name: "get_loan_borrower",
+              name: "get_loan",
               inputs: [
                 {
                   name: "loan_id",
@@ -141,14 +141,14 @@ const deployedContracts = {
               ],
               outputs: [
                 {
-                  type: "core::starknet::contract_address::ContractAddress",
+                  type: "(core::starknet::contract_address::ContractAddress, core::integer::u64, core::integer::u256, core::integer::u8)",
                 },
               ],
               state_mutability: "view",
             },
             {
               type: "function",
-              name: "get_loan_token",
+              name: "get_loan_amounts",
               inputs: [
                 {
                   name: "loan_id",
@@ -157,103 +157,7 @@ const deployedContracts = {
               ],
               outputs: [
                 {
-                  type: "core::starknet::contract_address::ContractAddress",
-                },
-              ],
-              state_mutability: "view",
-            },
-            {
-              type: "function",
-              name: "get_loan_amount",
-              inputs: [
-                {
-                  name: "loan_id",
-                  type: "core::felt252",
-                },
-              ],
-              outputs: [
-                {
-                  type: "core::integer::u256",
-                },
-              ],
-              state_mutability: "view",
-            },
-            {
-              type: "function",
-              name: "get_loan_repay_amount",
-              inputs: [
-                {
-                  name: "loan_id",
-                  type: "core::felt252",
-                },
-              ],
-              outputs: [
-                {
-                  type: "core::integer::u256",
-                },
-              ],
-              state_mutability: "view",
-            },
-            {
-              type: "function",
-              name: "get_loan_funded_amount",
-              inputs: [
-                {
-                  name: "loan_id",
-                  type: "core::felt252",
-                },
-              ],
-              outputs: [
-                {
-                  type: "core::integer::u256",
-                },
-              ],
-              state_mutability: "view",
-            },
-            {
-              type: "function",
-              name: "get_loan_fund_deadline",
-              inputs: [
-                {
-                  name: "loan_id",
-                  type: "core::felt252",
-                },
-              ],
-              outputs: [
-                {
-                  type: "core::integer::u64",
-                },
-              ],
-              state_mutability: "view",
-            },
-            {
-              type: "function",
-              name: "get_loan_interest",
-              inputs: [
-                {
-                  name: "loan_id",
-                  type: "core::felt252",
-                },
-              ],
-              outputs: [
-                {
-                  type: "core::integer::u256",
-                },
-              ],
-              state_mutability: "view",
-            },
-            {
-              type: "function",
-              name: "get_loan_status",
-              inputs: [
-                {
-                  name: "loan_id",
-                  type: "core::felt252",
-                },
-              ],
-              outputs: [
-                {
-                  type: "core::integer::u8",
+                  type: "(core::starknet::contract_address::ContractAddress, core::integer::u256, core::integer::u256, core::integer::u256)",
                 },
               ],
               state_mutability: "view",

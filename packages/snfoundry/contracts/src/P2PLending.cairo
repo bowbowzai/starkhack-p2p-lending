@@ -14,14 +14,10 @@ pub trait IP2PLendingTrait<TContractState> {
     fn register(ref self: TContractState, name: ByteArray);
 
     fn get_username(self: @TContractState, user: ContractAddress) -> ByteArray;
-    fn get_loan_borrower(self: @TContractState, loan_id: felt252) -> ContractAddress;
-    fn get_loan_token(self: @TContractState, loan_id: felt252) -> ContractAddress;
-    fn get_loan_amount(self: @TContractState, loan_id: felt252) -> u256;
-    fn get_loan_repay_amount(self: @TContractState, loan_id: felt252) -> u256;
-    fn get_loan_funded_amount(self: @TContractState, loan_id: felt252) -> u256;
-    fn get_loan_fund_deadline(self: @TContractState, loan_id: felt252) -> u64;
-    fn get_loan_interest(self: @TContractState, loan_id: felt252) -> u256;
-    fn get_loan_status(self: @TContractState, loan_id: felt252) -> u8;
+    fn get_loan(self: @TContractState, loan_id: felt252) -> (ContractAddress, u64, u256, u8);
+    fn get_loan_amounts(
+        self: @TContractState, loan_id: felt252
+    ) -> (ContractAddress, u256, u256, u256);
     fn get_loan_count(self: @TContractState) -> felt252;
     fn get_funder_funded_amount(
         self: @TContractState, loan_id: felt252, funder: ContractAddress
@@ -229,36 +225,24 @@ mod P2PLending {
             self.registeredUsers.read(user)
         }
 
-        fn get_loan_borrower(self: @ContractState, loan_id: felt252) -> ContractAddress {
-            self.loanBorrower.read(loan_id)
+        fn get_loan(self: @ContractState, loan_id: felt252) -> (ContractAddress, u64, u256, u8) {
+            (
+                self.loanBorrower.read(loan_id),
+                self.loanFundDeadline.read(loan_id),
+                self.loanInterest.read(loan_id),
+                self.loanStatus.read(loan_id)
+            )
         }
 
-        fn get_loan_token(self: @ContractState, loan_id: felt252) -> ContractAddress {
-            self.loanToken.read(loan_id)
-        }
-
-        fn get_loan_amount(self: @ContractState, loan_id: felt252) -> u256 {
-            self.loanAmount.read(loan_id)
-        }
-
-        fn get_loan_repay_amount(self: @ContractState, loan_id: felt252) -> u256 {
-            self.loanRepayAmount.read(loan_id)
-        }
-
-        fn get_loan_funded_amount(self: @ContractState, loan_id: felt252) -> u256 {
-            self.loanFundedAmount.read(loan_id)
-        }
-
-        fn get_loan_fund_deadline(self: @ContractState, loan_id: felt252) -> u64 {
-            self.loanFundDeadline.read(loan_id)
-        }
-
-        fn get_loan_interest(self: @ContractState, loan_id: felt252) -> u256 {
-            self.loanInterest.read(loan_id)
-        }
-
-        fn get_loan_status(self: @ContractState, loan_id: felt252) -> u8 {
-            self.loanStatus.read(loan_id)
+        fn get_loan_amounts(
+            self: @ContractState, loan_id: felt252
+        ) -> (ContractAddress, u256, u256, u256) {
+            (
+                self.loanToken.read(loan_id),
+                self.loanAmount.read(loan_id),
+                self.loanRepayAmount.read(loan_id),
+                self.loanFundedAmount.read(loan_id)
+            )
         }
 
         fn get_loan_count(self: @ContractState) -> felt252 {
