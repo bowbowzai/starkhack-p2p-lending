@@ -1,9 +1,10 @@
-# StarkStorm: Starknet P2P Lending Platform
+# StarkStorm
 
 <img src="./docs/Logo.png" alt="Image Description" width="100" />
 
-
 ## TL;DR:
+
+⚡️ StarkStorm is the P2P lending version of Stormbit on Starknet ⚡️
 
 This is a peer-to-peer lending platform developed on Starknet. It allows borrowers to request loans and multiple lenders to fund the loans by specifying the amount they want to contribute.
 
