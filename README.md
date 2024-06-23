@@ -3,8 +3,6 @@
 <img src="./docs/Logo.png" alt="Image Description" width="100" />
 
 
-
-
 ## TL;DR:
 
 This is a peer-to-peer lending platform developed on Starknet. It allows borrowers to request loans and multiple lenders to fund the loans by specifying the amount they want to contribute.
@@ -12,24 +10,24 @@ This is a peer-to-peer lending platform developed on Starknet. It allows borrowe
 StarkStorm, a product of Stormbit on the Starknet blockchain, addresses the need for a trust-based, modular, and highly customizable lending platform. StarkStorm offers decentralized and efficient P2P lending supported by robust off-chain data aggregation, targeting financial inclusion and offering better APYs than traditional banking systems.
 
 
-## Features
+## 🌐 Features
 
-### User Registration
+### 🔑 User Registration
 - Enable users to register on the platform with their desired name
 - Only registered users can use the platform
 
-### Request Loan
+### 💸 Request Loan
 - Borrowers can request a loan by specifying the token address, amount, interest, and deadline for allocation
 
-### Fund Loan
+### 💰 Fund Loan
 - Lenders can view a list of loans and choose which to fund based on their preferences
 - Funds are transferred directly to the borrower
 
-### Repay Loan
+### 💳 Repay Loan
 - The platform does not restrict who can repay the loan; it can be the borrower or another user
 - Repayment funds are automatically transferred back to lenders
 
-## Requirements
+## 🔧 Requirements
 
 Before you begin, you need to install the following tools:
 
@@ -37,7 +35,7 @@ Before you begin, you need to install the following tools:
 - Yarn ([v1](https://classic.yarnpkg.com/en/docs/install/) or [v2+](https://yarnpkg.com/getting-started/install))
 - [Git](https://git-scm.com/downloads)
 
-### Scarb version
+### 🛠️ Scarb version
 
 To ensure the proper functioning of scaffold-stark, your local `Scarb` version must be `2.5.4`. To accomplish this, first check your local Scarb version:
 
@@ -87,7 +85,7 @@ curl --proto '=https' --tlsv1.2 -sSf https://docs.swmansion.com/scarb/install.sh
 
 </details>
 
-### Starknet Foundry version
+### 🧪 Starknet Foundry version
 
 To ensure the proper functioning of the tests on scaffold-stark, your Starknet Foundry version must be 0.23.0. To accomplish this, first check your Starknet Foundry version:
 
@@ -99,14 +97,14 @@ If your Starknet Foundry version is not `0.23.0`, you need to install it.
 
 - [Starknet Foundry](https://foundry-rs.github.io/starknet-foundry/getting-started/installation.html)
 
-## Compatible versions
+## 📋 Compatible versions
 
 - Scarb - v2.5.4
 - Snforge - v0.23
 - Cairo - v2.5.4
 - Rpc - v0.5.1
 
-## Quickstart
+## 🚀 Quickstart
 
 To get started, follow the steps below:
 
