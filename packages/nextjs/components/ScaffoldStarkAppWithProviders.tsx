@@ -24,12 +24,12 @@ const ScaffoldStarkApp = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <>
-      <div className="flex flex-col min-h-screen">
-        <Header />
+      <div className="flex flex-col min-h-screen bg-[#070817]">
+        {/* <Header />  */}
         <main className="relative flex flex-col flex-1">{children}</main>
-        <Footer />
+        {/* <Footer /> */}
       </div>
-      <Toaster />
+      {/* <Toaster /> */}
     </>
   );
 };

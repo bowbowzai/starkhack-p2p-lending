@@ -4,10 +4,14 @@ import React, { useCallback, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Bars3Icon, BugAntIcon } from "@heroicons/react/24/outline";
+import { Bars3Icon } from "@heroicons/react/24/outline";
 import { useOutsideClick } from "~~/hooks/scaffold-stark";
 import { CustomConnectButton } from "~~/components/scaffold-stark/CustomConnectButton";
-import { FaucetButton } from "~~/components/scaffold-stark/FaucetButton";
+import { useScaffoldReadContract } from "~~/hooks/scaffold-stark/useScaffoldReadContract";
+import { useAccount } from "@starknet-react/core";
+import { byteArray } from "starknet-dev";
+import { useScaffoldMultiWriteContract } from "~~/hooks/scaffold-stark/useScaffoldMultiWriteContract";
+import { useBalance } from "@starknet-react/core";
 
 type HeaderMenuLink = {
   label: string;
@@ -16,15 +20,15 @@ type HeaderMenuLink = {
 };
 
 export const menuLinks: HeaderMenuLink[] = [
-  {
-    label: "Home",
-    href: "/",
-  },
-  {
-    label: "Debug Contracts",
-    href: "/debug",
-    icon: <BugAntIcon className="h-4 w-4" />,
-  },
+  // {
+  //   label: "Home",
+  //   href: "/",
+  // },
+  // {
+  //   label: "Debug Contracts",
+  //   href: "/debug",
+  //   icon: <BugAntIcon className="h-4 w-4" />,
+  // },
 ];
 
 export const HeaderMenuLinks = () => {
@@ -57,6 +61,7 @@ export const HeaderMenuLinks = () => {
  * Site header
  */
 export const Header = () => {
+  const { address } = useAccount();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const burgerMenuRef = useRef<HTMLDivElement>(null);
   useOutsideClick(
@@ -64,8 +69,51 @@ export const Header = () => {
     useCallback(() => setIsDrawerOpen(false), []),
   );
 
+  //@ts-ignore
+  const { data: username } = useScaffoldReadContract({
+    contractName: "P2PLending",
+    functionName: "get_username",
+    args: [address ?? ""],
+  });
+
+  const { writeAsync: faucet, isPending } = useScaffoldMultiWriteContract({
+    calls: [
+      /*{
+        contractName: "Eth",
+        functionName: "faucet",
+        args: [address ?? "", 100 * 10 ** 18]
+      },*/
+      {
+        contractName: "STRK",
+        functionName: "faucet",
+        args: [address ?? "", 1000],
+      },
+      {
+        contractName: "USDC",
+        functionName: "faucet",
+        args: [address ?? "", 1000],
+      },
+    ],
+  });
+
+  const { data: balanceSTRK } = useBalance({ address });
+
+  //console.log(balanceSTRK)
+
+  const wrapInTryCatch =
+    (fn: () => Promise<any>, errorMessageFnDescription: string) => async () => {
+      try {
+        await fn();
+      } catch (error) {
+        console.error(
+          `Error calling ${errorMessageFnDescription} function`,
+          error,
+        );
+      }
+    };
+
   return (
-    <div className="sticky lg:static top-0 navbar bg-base-100 min-h-0 flex-shrink-0 justify-between z-20 shadow-md shadow-secondary px-0 sm:px-2">
+    <div className="sticky lg:static top-0 navbar bg-[#070817] min-h-0 flex-shrink-0 justify-between z-20 px-0 sm:px-2 py-6">
       <div className="navbar-start w-auto lg:w-1/2">
         <div className="lg:hidden dropdown" ref={burgerMenuRef}>
           <label
@@ -94,28 +142,42 @@ export const Header = () => {
         <Link
           href="/"
           passHref
-          className="hidden lg:flex items-center gap-2 ml-4 mr-6 shrink-0"
+          className="hidden lg:flex items-center gap-4 ml-4 mr-6 shrink-0"
         >
-          <div className="flex relative w-10 h-10">
+          <div className="flex relative w-10 h-14">
             <Image
               alt="SE2 logo"
               className="cursor-pointer"
-              fill
-              src="/logo.svg"
+              width={40}
+              height={60}
+              src="/logo.png"
             />
           </div>
-          <div className="flex flex-col">
-            <span className="font-bold leading-tight">Scaffold-Stark</span>
-            <span className="text-xs">Starknet dev stack</span>
+          <div className="flex text-xs bg-white px-4 py-1 rounded-[7px]">
+            Beta testnet
           </div>
         </Link>
         <ul className="hidden lg:flex lg:flex-nowrap menu menu-horizontal px-1 gap-2">
           <HeaderMenuLinks />
         </ul>
       </div>
-      <div className="navbar-end flex-grow mr-4">
+      <div className="navbar-end flex-grow mr-4 gap-4">
+        <button
+          className="flex items-center border border-solid border-[#C2B6FE] px-4 py-2 rounded-[7px] gap-2"
+          onClick={wrapInTryCatch(faucet, "usdt")}
+        >
+          <Image src="/faucet.svg" alt="user" width={18} height={14}></Image>
+          <span className="text-sm text-[#C2B6FE]">
+            {isPending ? "Minting..." : "Faucet"}
+          </span>
+        </button>
+        <div className="flex border border-solid border-[#C2B6FE] px-4 py-2 rounded-[7px] gap-2">
+          <Image src="/user.svg" alt="user" width={18} height={14}></Image>
+          <span className="text-sm text-[#C2B6FE]">
+            {username ? byteArray.stringFromByteArray(username as any) : ""}
+          </span>
+        </div>
         <CustomConnectButton />
-        <FaucetButton />
       </div>
     </div>
   );

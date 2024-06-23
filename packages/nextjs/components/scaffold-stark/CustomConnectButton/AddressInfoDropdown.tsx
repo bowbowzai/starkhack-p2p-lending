@@ -15,6 +15,10 @@ import { useOutsideClick } from "~~/hooks/scaffold-stark";
 import { getTargetNetworks } from "~~/utils/scaffold-stark";
 import { Address } from "@starknet-react/chains";
 import { useDisconnect } from "@starknet-react/core";
+import { getStarknetPFPIfExists } from "~~/utils/profile";
+import useConditionalStarkProfile from "~~/hooks/useConditionalStarkProfile";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const allowedNetworks = getTargetNetworks();
 
@@ -32,8 +36,11 @@ export const AddressInfoDropdown = ({
   blockExplorerAddressLink,
 }: AddressInfoDropdownProps) => {
   const { disconnect } = useDisconnect();
+  const router = useRouter();
 
   const [addressCopied, setAddressCopied] = useState(false);
+
+  const { data: profile } = useConditionalStarkProfile(address);
 
   const [selectingNetwork, setSelectingNetwork] = useState(false);
   const dropdownRef = useRef<HTMLDetailsElement>(null);
@@ -43,24 +50,41 @@ export const AddressInfoDropdown = ({
   };
   useOutsideClick(dropdownRef, closeDropdown);
 
+  const handleDisconnect = () => {
+    disconnect();
+    router.push("/");
+  };
+
   return (
     <>
       <details ref={dropdownRef} className="dropdown dropdown-end leading-3">
         <summary
           tabIndex={0}
-          className="btn btn-secondary btn-sm pl-0 pr-2 shadow-md dropdown-toggle gap-0 !h-auto"
+          className="btn btn-sm pr-2 dropdown-toggle gap-0 !h-auto bg-[#C2B6FE] border-none px-6 rounded-[7px]"
         >
-          <BlockieAvatar address={address} size={30} ensImage={ensAvatar} />
+          {getStarknetPFPIfExists(profile?.profilePicture) ? (
+            //eslint-disable-next-line @next/next/no-img-element
+            <img
+              src="/wallet.svg"
+              alt="Profile Picture"
+              className="rounded-full h-8 w-8"
+              width={30}
+              height={30}
+            />
+          ) : (
+            <Image src="/wallet.svg" alt="wallet" width={16} height={16} />
+          )}
           <span className="ml-2 mr-1">
             {isENS(displayName)
               ? displayName
-              : address?.slice(0, 6) + "..." + address?.slice(-4)}
+              : profile?.name ||
+                address?.slice(0, 6) + "..." + address?.slice(-4)}
           </span>
           <ChevronDownIcon className="h-6 w-4 ml-2 sm:ml-0" />
         </summary>
         <ul
           tabIndex={0}
-          className="dropdown-content menu z-[2] p-2 mt-2 shadow-center shadow-accent bg-base-200 rounded-box gap-1"
+          className="dropdown-content menu z-[2] p-2 mt-2 bg-base-200 rounded-box gap-1"
         >
           <NetworkOptions hidden={!selectingNetwork} />
           <li className={selectingNetwork ? "hidden" : ""}>
@@ -135,7 +159,7 @@ export const AddressInfoDropdown = ({
             <button
               className="menu-item text-error btn-sm !rounded-xl flex gap-3 py-3"
               type="button"
-              onClick={() => disconnect()}
+              onClick={handleDisconnect}
             >
               <ArrowLeftEndOnRectangleIcon className="h-6 w-4 ml-2 sm:ml-0" />{" "}
               <span>Disconnect</span>

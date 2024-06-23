@@ -59,7 +59,7 @@ export const Balance = ({ address, className = "", usdMode }: BalanceProps) => {
       className={`btn btn-sm btn-ghost flex flex-col font-normal items-center hover:bg-transparent ${className}`}
       onClick={toggleBalanceMode}
     >
-      <div className="w-full flex items-center justify-center">
+      <div className="w-full flex items-center justify-center text-white">
         {displayUsdMode ? (
           <>
             <span className="text-[0.8em] font-bold mr-1">$</span>
@@ -73,7 +73,7 @@ export const Balance = ({ address, className = "", usdMode }: BalanceProps) => {
         ) : (
           <>
             <span>{parseFloat(formatted).toFixed(4)}</span>
-            <span className="text-[0.8em] font-bold ml-1">
+            <span className="text-[0.8em] font-bold ml-1 text-white">
               {targetNetwork.nativeCurrency.symbol}
             </span>
           </>

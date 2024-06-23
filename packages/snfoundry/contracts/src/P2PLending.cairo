@@ -23,6 +23,9 @@ pub trait IP2PLendingTrait<TContractState> {
         self: @TContractState, loan_id: felt252, funder: ContractAddress
     ) -> u256;
     fn get_funders_in_loan_counter(self: @TContractState, loan_id: felt252) -> u256;
+    fn get_loans(
+        self: @TContractState
+    ) -> Array<((ContractAddress, u64, u256, u8), (ContractAddress, u256, u256, u256))>;
 }
 
 #[starknet::contract]
@@ -121,7 +124,7 @@ mod P2PLending {
             self.loanAmount.write(loan_id, amount);
             self.loanRepayAmount.write(loan_id, repayAmount);
             self.loanFundedAmount.write(loan_id, 0);
-            self.loanFundDeadline.write(loan_id, get_block_timestamp() + deadlineForFund);
+            self.loanFundDeadline.write(loan_id, deadlineForFund);
             self.loanInterest.write(loan_id, interest_rate);
             self.loanStatus.write(loan_id, 0);
             self.loanCount.write(loan_id + 1);
@@ -243,6 +246,28 @@ mod P2PLending {
                 self.loanRepayAmount.read(loan_id),
                 self.loanFundedAmount.read(loan_id)
             )
+        }
+
+        // TODO: fix
+        fn get_loans(
+            self: @ContractState
+        ) -> Array<((ContractAddress, u64, u256, u8), (ContractAddress, u256, u256, u256))> {
+            let mut counter = self.loanCount.read();
+            let mut loans = array![];
+
+            loop {
+                let loan_id = counter - 1;
+                let loan = self.get_loan(loan_id);
+                let loan_amounts = self.get_loan_amounts(loan_id);
+                loans.append((loan, loan_amounts));
+                counter -= 1;
+
+                if counter == 0 {
+                    break;
+                }
+            };
+
+            loans
         }
 
         fn get_loan_count(self: @ContractState) -> felt252 {
