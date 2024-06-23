@@ -10,21 +10,24 @@ This is a peer-to-peer lending platform developed on Starknet. It allows borrowe
 
 StarkStorm, a product of Stormbit on the Starknet blockchain, addresses the need for a trust-based, modular, and highly customizable lending platform. StarkStorm offers decentralized and efficient P2P lending supported by robust off-chain data aggregation, targeting financial inclusion and offering better APYs than traditional banking systems.
 
-
 ## 🌐 Features
 
 ### 🔑 User Registration
+
 - Enable users to register on the platform with their desired name
 - Only registered users can use the platform
 
 ### 💸 Request Loan
+
 - Borrowers can request a loan by specifying the token address, amount, interest, and deadline for allocation
 
 ### 💰 Fund Loan
+
 - Lenders can view a list of loans and choose which to fund based on their preferences
 - Funds are transferred directly to the borrower
 
 ### 💳 Repay Loan
+
 - The platform does not restrict who can repay the loan; it can be the borrower or another user
 - Repayment funds are automatically transferred back to lenders
 
@@ -112,12 +115,13 @@ To get started, follow the steps below:
 1. Clone this repo and install dependencies
 
 ```bash
-git clone https://github.com/bowbowzai/starkhack-p2p-lending.git --recurse-submodules
+git clone https://github.com/bowbowzai/starkhack-p2p-lending.git
 cd starkhack-p2p-lending
+git clone https://github.com/0xSpaceShard/starknet-devnet-rs -b json-rpc-v0.5.1 packages/snfoundry/local-devnet
 yarn install
 ```
 
-2. Run a local network in the first terminal.
+1. Run a local network in the first terminal.
 
 ```bash
 yarn chain
