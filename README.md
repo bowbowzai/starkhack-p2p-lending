@@ -1,17 +1,33 @@
-# Starknet p2p lending platform
+# StarkStorm: Starknet P2P Lending Platform
 
-This is a peer to peer lending platform developed on Starknet, it allows borrowers to request for loan and multiple lenders are able to fund the loan by specifying the amount they want to fund.
+<img src="./docs/Logo.png" alt="Image Description" width="100" />
+
+
+
+
+## TL;DR:
+
+This is a peer-to-peer lending platform developed on Starknet. It allows borrowers to request loans and multiple lenders to fund the loans by specifying the amount they want to contribute.
+
+StarkStorm, a product of Stormbit on the Starknet blockchain, addresses the need for a trust-based, modular, and highly customizable lending platform. StarkStorm offers decentralized and efficient P2P lending supported by robust off-chain data aggregation, targeting financial inclusion and offering better APYs than traditional banking systems.
+
 
 ## Features
 
-- User registration
-  - Enable user to register as a user on the platform with they desired name, only registered users are able to use this platform.
-- Request loan
-  - Borrowers are able to request for a loan by specifying token address, amount to loan, interest, deadline for allocation
-- Fund loan
-  - Lenders are able to view list of loan and choose who to fund according to their preference, the fund will be transfer directly to the borrower
-- Repay loan
-  - Use for repaying the loan, this platform does not restrict the user to repay for loan, it can be the borrower or not, and the repay fund will be transfered back to lenders automatically
+### User Registration
+- Enable users to register on the platform with their desired name
+- Only registered users can use the platform
+
+### Request Loan
+- Borrowers can request a loan by specifying the token address, amount, interest, and deadline for allocation
+
+### Fund Loan
+- Lenders can view a list of loans and choose which to fund based on their preferences
+- Funds are transferred directly to the borrower
+
+### Repay Loan
+- The platform does not restrict who can repay the loan; it can be the borrower or another user
+- Repayment funds are automatically transferred back to lenders
 
 ## Requirements
 
